@@ -9,6 +9,7 @@ st.write("""
 왼쪽 사이드바에서 페이지를 선택해 이동할 수 있습니다.
 """)
 
+
 col1, col2 = st.columns(2)
 with col1:
     st.subheader("소개 페이지")
