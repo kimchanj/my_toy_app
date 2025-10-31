@@ -1,14 +1,13 @@
 {
     "version": "0.2.0",
-    "configurations": 
-    [
+    "configurations": [
         {
-            "name": "streamlit debug",
+            "name": "Streamlit Debug",
             "type": "python",
             "request": "launch",
-            "module": "streamlit",
-            "args": ["run", "${file}", "--server.headless", "true", "--server.runOnSave", "true"],
-            "justMyCode": true,
+            "program": "${workspaceFolder}/pages/2_휴먼디자인_비자아톡.py",
+            "console": "integratedTerminal",
+            "args": ["run"]
         }
     ]
- }
+}

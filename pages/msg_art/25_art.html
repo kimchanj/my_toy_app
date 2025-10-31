@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Gate 25 – Vessel of Love</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: black;
+    font-family: Arial, sans-serif;
+  }
+  #message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3em;
+    color: white;
+    letter-spacing: 0.1em;
+    opacity: 0;
+  }
+  .letter {
+    display: inline-block;
+    opacity: 0;
+    color: gold;
+    transition: opacity 0.7s ease-in-out;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+<div id="message"></div>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+
+// 별 초기화
+const stars = [];
+const nStars = 500;
+for (let i = 0; i < nStars; i++) {
+    stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2 + 1,
+        alpha: Math.random() * 0.5 + 0.2
+    });
+}
+
+// 태양빛 초기화
+let sunRadius = 10;
+const sunMaxRadius = Math.max(canvas.width, canvas.height);
+const messageText = "모든 존재는 이미 신성하다.";
+const messageDiv = document.getElementById("message");
+
+// 글자별 span 생성
+messageDiv.innerHTML = '';
+for (let char of messageText) {
+    const span = document.createElement('span');
+    span.textContent = char;
+    span.className = 'letter';
+    messageDiv.appendChild(span);
+}
+
+// 글자 등장 상태
+let lettersShown = false;
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 별 그리기 (고정)
+    for (let star of stars) {
+        ctx.globalAlpha = star.alpha;
+        ctx.fillStyle = "white";
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI*2);
+        ctx.fill();
+    }
+
+    // 태양 그리기 (중심에서 황금빛 확장)
+    ctx.globalAlpha = 1;
+    const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, sunRadius);
+    gradient.addColorStop(0, "rgba(255,255,200,1)");
+    gradient.addColorStop(0.7, "rgba(255,255,180,0.6)");
+    gradient.addColorStop(1, "rgba(255,255,150,0)");
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, sunRadius, 0, Math.PI*2);
+    ctx.fill();
+
+    // 태양 반경 천천히 증가
+    if (sunRadius < sunMaxRadius) {
+        sunRadius += sunMaxRadius * 0.0005; // 느린 확장
+    } else if (!lettersShown) {
+        // 글자별 천천히 등장
+        const letters = document.querySelectorAll('.letter');
+        letters.forEach((letter, i) => {
+            setTimeout(() => {
+                letter.style.opacity = 1;
+            }, i * 400); // 글자별 시간차 느리게
+        });
+        lettersShown = true;
+    }
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html>
